@@ -1,9 +1,11 @@
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, RadioField
 import numpy as np
+
 
 with open('wordle_words.txt') as f:
     global lines
@@ -120,6 +122,7 @@ def get_suggestion(cur_words, unknowns):
     top_scores.reverse()'''
     
     return cur_words[index], int(score_record[index]), top_words, top_scores
+
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
