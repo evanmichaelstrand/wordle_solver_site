@@ -1,34 +1,37 @@
 <!doctype html>
 <html>
     <head>
-        <title>Wordle Solver</title>
+        <title>Wordle Bot</title>
         <meta name="description" content="Wordle Solver">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="https://www.nytimes.com/games-assets/v2/wordle.0364004a3383f186fb7ca787d6588abf7c2774a4.css">
         <script>
             function reset()
             {
-                location.href = "http://127.0.0.1:5000/"
+                location.href = "/"
             }
         </script>
         <script>
-            function changeColorGreen(id)
+            function changeColor(id)
             {
-                document.getElementById(id).style.backgroundColor = "#6AAA64";
+                if (document.getElementById(id).style.backgroundColor == "rgb(106, 170, 100)"){
+                    //if it's green, change to yellow
+                    document.getElementById(id).style.backgroundColor = "#C9B458";
+                }
+                else if (document.getElementById(id).style.backgroundColor == "rgb(201, 180, 88)"){
+                    //if it's yellow, change to gray
+                    document.getElementById(id).style.backgroundColor = "#787C7E";
+                }
+                else{
+                    //otherwise change to green
+                    document.getElementById(id).style.backgroundColor = "#6AAA64";
+                }
             }
         </script>
 
         <script>
-            function changeColorYellow(id)
+            function changeChoice(selectID, wordID)
             {
-                document.getElementById(id).style.backgroundColor = "#C9B458";
-            }
-        </script>
-
-        <script>
-            function changeColorGray(id)
-            {
-                document.getElementById(id).style.backgroundColor = "#787C7E";
+                document.getElementById(selectID).setAttribute("value", document.getElementById(wordID).getAttribute("value"));   
             }
         </script>
 
@@ -78,15 +81,23 @@
     </head>
     <body onload="loadPrevious({{colors}}, {{suggestions}})">
 
-        <header class="appHeader" style="text-align:center">Wordle Solver</header>
+        <div class="appHeader" style=" display:flex; flex-direction: row; align-items: center; flex-wrap: nowrap;">
+            <div style="width:100%; text-align:center; align-items: center; justify-content: center; padding-left: 3.5%;">WordleBot</div>
+            <a href="https://www.linkedin.com/in/evan-strand-a33331195/" style="margin-left:auto; padding-right: 2%;">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="4 4 24 24" width="24" class="game-icon" data-testid="icon-help" ><path fill="var(--color-tone-1)" d="M14.8333 23H17.1666V20.6667H14.8333V23ZM15.9999 4.33334C9.55992 4.33334 4.33325 9.56001 4.33325 16C4.33325 22.44 9.55992 27.6667 15.9999 27.6667C22.4399 27.6667 27.6666 22.44 27.6666 16C27.6666 9.56001 22.4399 4.33334 15.9999 4.33334ZM15.9999 25.3333C10.8549 25.3333 6.66659 21.145 6.66659 16C6.66659 10.855 10.8549 6.66668 15.9999 6.66668C21.1449 6.66668 25.3333 10.855 25.3333 16C25.3333 21.145 21.1449 25.3333 15.9999 25.3333ZM15.9999 9.00001C13.4216 9.00001 11.3333 11.0883 11.3333 13.6667H13.6666C13.6666 12.3833 14.7166 11.3333 15.9999 11.3333C17.2833 11.3333 18.3333 12.3833 18.3333 13.6667C18.3333 16 14.8333 15.7083 14.8333 19.5H17.1666C17.1666 16.875 20.6666 16.5833 20.6666 13.6667C20.6666 11.0883 18.5783 9.00001 15.9999 9.00001Z"></path></svg>
+            </a>
+        </div>
         
         <div style="height: 5%"></div>
             
         <div class="container-fluid" style="text-align:center;">
             <table class="tableStyle">
                 <tr class="rowStyle">
-                    <th class="cellStyle" style="font-size: 26px; padding-bottom: 70px;">Suggestion</th>
-                    <th class="cellStyle" style="font-size: 26px; padding-bottom: 70px;">Result</th>
+                    <th class="cellStyle" style="font-size: 26px; padding-top: 50px; padding-bottom: 5px;">Word</th>
+                    <th class="cellStyle" style="font-size: 26px; padding-top: 50px; padding-bottom: 5px;">Colors</th>
+                </tr>
+                <tr class="rowStyle">
+                    <td style="padding-bottom: 50px;">{{remaining}} left!</td>
                 </tr>
                 <!--Row 1-->
                 <tr class="rowStyle">
@@ -272,62 +283,40 @@
                 <tr class="rowStyle">
                     <!--Suggestion-->
                     <td class="cellStyle">
+                        <label id="submit" style="color:red" hidden></label>
                         <div class="row" style="justify-content: center; align-items: center;">
-                            <input class="form-control" id="sug6" type="text" value="" aria-label="readonly input" readonly style="text-align: center; width: 50%; border-radius: 0px; border: 2px solid lightgray">  
+                            <input class="form-control" list="topWords" placeholder="Enter word and view suggestions" style="text-align: center; width: 50%; border-radius: 0px; border: 2px solid lightgray" id="choice" value="">
+                            <datalist id="topWords">
+                                {% for i in range(remaining) %}
+                                    <option value="{{top_words[i]}}">{{top_scores[i]}}
+                                {% endfor %}
+                            </datalist>
                         </div>
                     </td>
                     <!--Input-->
                     <td class="cellStyle">
                         <div class="row" style="justify-content:center; align-items:center; padding-left:35px">
                             <div class="dropdown col-1" style="width:55px;">
-                                <button class="btn" style="border: 2px solid lightgray; width: 50px; height: 50px; border-radius: 0%;" id="6a" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="btn" style="border: 2px solid lightgray; width: 50px; height: 50px; border-radius: 0%;" id="6a" type="button" onclick="changeColor('6a')" aria-expanded="false">
                                 </button>
-                                <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item" href="#" onclick="changeColorGreen('6a')">Green</a></li>
-                                  <li><a class="dropdown-item" href="#" onclick="changeColorYellow('6a')">Yellow</a></li>
-                                  <li><a class="dropdown-item" href="#" onclick="changeColorGray('6a')">Gray</a></li>
-                                </ul>
                             </div>
                             <div class="dropdown col-1" style="width:55px;">
-                                <button class="btn" style="border: 2px solid lightgray; width: 50px; height: 50px; border-radius: 0%;" id="6b" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="btn" style="border: 2px solid lightgray; width: 50px; height: 50px; border-radius: 0%;" id="6b" type="button" onclick="changeColor('6b')" aria-expanded="false">
                                 </button>
-                                <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item" href="#" onclick="changeColorGreen('6b')">Green</a></li>
-                                  <li><a class="dropdown-item" href="#" onclick="changeColorYellow('6b')">Yellow</a></li>
-                                  <li><a class="dropdown-item" href="#" onclick="changeColorGray('6b')">Gray</a></li>
-                                </ul>
                             </div>
                             <div class="dropdown col-1" style="width:55px;">
-                                <button class="btn" style="border: 2px solid lightgray; width: 50px; height: 50px; border-radius: 0%;" id="6c" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="btn" style="border: 2px solid lightgray; width: 50px; height: 50px; border-radius: 0%;" id="6c" type="button" onclick="changeColor('6c')" aria-expanded="false">
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#" onclick="changeColorGreen('6c')">Green</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="changeColorYellow('6c')">Yellow</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="changeColorGray('6c')">Gray</a></li>
-                                </ul>
                             </div>
                             <div class="dropdown col-1" style="width:55px;">
-                                <button class="btn" style="border: 2px solid lightgray; width: 50px; height: 50px; border-radius: 0%;" id="6d" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="btn" style="border: 2px solid lightgray; width: 50px; height: 50px; border-radius: 0%;" id="6d" type="button" onclick="changeColor('6d')" aria-expanded="false">
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#" onclick="changeColorGreen('6d')">Green</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="changeColorYellow('6d')">Yellow</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="changeColorGray('6d')">Gray</a></li>
-                                </ul>
                             </div>
                             <div class="dropdown col-1" style="width:55px;">
-                                <button class="btn" style="border: 2px solid lightgray; width: 50px; height: 50px; border-radius: 0%;" id="6e" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button class="btn" style="border: 2px solid lightgray; width: 50px; height: 50px; border-radius: 0%;" id="6e" type="button" onclick="changeColor('6e')" aria-expanded="false">
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#" onclick="changeColorGreen('6e')">Green</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="changeColorYellow('6e')">Yellow</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="changeColorGray('6e')">Gray</a></li>
-                                </ul>
                             </div>
                             <div class="col-1" style="width:100px;">
-                                <button class="btn" style="background-color: #D3D6DA;" href="#" type="button">
-                                    Submit
-                                </button>
                             </div>
                         </div>
                     </td>
@@ -388,7 +377,7 @@
                 document.getElementById('sug3').value = suggestions[2]
                 document.getElementById('sug4').value = suggestions[3]
                 document.getElementById('sug5').value = suggestions[4]
-                document.getElementById('sug6').value = suggestions[5]
+                //document.getElementById('sug6').value = suggestions[5]
             }
         </script>
     </body>
