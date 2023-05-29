@@ -218,7 +218,7 @@ def process6g():
     guess, score, top_words, top_scores = get_suggestion(cur_wordlist, get_unknowns(colors[4])[0])
     return render_template('wordle6.html', colors=colors, suggestions=suggestions, remaining=remaining, top_words=top_words, top_scores = top_scores)
 
-app.run(port=8000)
+app.run(port=8001)
 
 
 
