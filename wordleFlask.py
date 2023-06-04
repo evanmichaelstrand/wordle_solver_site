@@ -139,7 +139,7 @@ def process2p(wordAfter,choice):
 
 @app.route('/2', methods=['GET'])
 def process2g():
-    global cur_wordlist
+    #global cur_wordlist
     cur_wordlist = get_words_from_guess(cur_wordlist, suggestions[0], colors[0])
     remaining = len(cur_wordlist)
     if remaining == 0:
