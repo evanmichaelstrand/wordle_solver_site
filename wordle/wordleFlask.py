@@ -152,7 +152,10 @@ def process2g():
 
 @app.route('/3/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process3p(wordAfter, choice):
+<<<<<<< HEAD
     global colors
+=======
+>>>>>>> 235396f06358c4c6b0b9b1e8c811fc89b80c18fc
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -170,7 +173,11 @@ def process3g():
 
 @app.route('/4/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process4p(wordAfter, choice):
+<<<<<<< HEAD
     global colors 
+=======
+    print(wordAfter, "#4 from flask!") 
+>>>>>>> 235396f06358c4c6b0b9b1e8c811fc89b80c18fc
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -188,7 +195,11 @@ def process4g():
 
 @app.route('/5/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process5p(wordAfter,choice):
+<<<<<<< HEAD
     global colors
+=======
+    print(wordAfter, "#5 from flask!") 
+>>>>>>> 235396f06358c4c6b0b9b1e8c811fc89b80c18fc
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -206,8 +217,12 @@ def process5g():
 
 @app.route('/6/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process6p(wordAfter, choice):
+<<<<<<< HEAD
     #print(wordAfter, "#6 from flask!") 
     global colors
+=======
+    print(wordAfter, "#6 from flask!") 
+>>>>>>> 235396f06358c4c6b0b9b1e8c811fc89b80c18fc
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
