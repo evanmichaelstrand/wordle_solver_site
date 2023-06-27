@@ -133,6 +133,7 @@ def index():
 
 @app.route('/2/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process2p(wordAfter,choice):
+    global colors
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -140,6 +141,8 @@ def process2p(wordAfter,choice):
 @app.route('/2', methods=['GET'])
 def process2g():
     global cur_wordlist
+    print(suggestions[0])
+    print(colors[0])
     cur_wordlist = get_words_from_guess(cur_wordlist, suggestions[0], colors[0])
     remaining = len(cur_wordlist)
     if remaining == 0:
@@ -218,7 +221,9 @@ def process6g():
     guess, score, top_words, top_scores = get_suggestion(cur_wordlist, get_unknowns(colors[4])[0])
     return render_template('wordle6.html', colors=colors, suggestions=suggestions, remaining=remaining, top_words=top_words, top_scores = top_scores)
 
-app.run()
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 
