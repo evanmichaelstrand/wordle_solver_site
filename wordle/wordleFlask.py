@@ -152,6 +152,7 @@ def process2g():
 
 @app.route('/3/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process3p(wordAfter, choice):
+    global colors
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -169,7 +170,7 @@ def process3g():
 
 @app.route('/4/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process4p(wordAfter, choice):
-    print(wordAfter, "#4 from flask!") 
+    global colors 
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -187,7 +188,7 @@ def process4g():
 
 @app.route('/5/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process5p(wordAfter,choice):
-    print(wordAfter, "#5 from flask!") 
+    global colors
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -205,7 +206,8 @@ def process5g():
 
 @app.route('/6/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process6p(wordAfter, choice):
-    print(wordAfter, "#6 from flask!") 
+    #print(wordAfter, "#6 from flask!") 
+    global colors
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
