@@ -55,7 +55,7 @@
                         }
                     }
                     let request = new XMLHttpRequest()
-                    request.open('POST', `/5/${wordAfter}/${choice}`, !(!asyncProc))        //https://stackoverflow.com/questions/3760319/how-to-force-a-program-to-wait-until-an-http-request-is-finished-in-javascript
+                    request.open('POST', `/5/${wordAfter}/${choice}`)        //https://stackoverflow.com/questions/3760319/how-to-force-a-program-to-wait-until-an-http-request-is-finished-in-javascript
                     request.send();
                     location.href = "/5"
                     }
