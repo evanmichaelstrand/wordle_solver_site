@@ -13,6 +13,7 @@ with open('wordle_words.txt') as f:
 
 app = Flask(__name__)
 
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  #https://stackoverflow.com/questions/34066804/disabling-caching-in-flask#:~:text=43-,If,-you%20have%20always
 app.config['SECRET_KEY'] = 'ICESECRET'
 
 def fresh():
