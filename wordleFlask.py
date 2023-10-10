@@ -13,6 +13,7 @@ with open('wordle_words.txt') as f:
 
 app = Flask(__name__)
 
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  #https://stackoverflow.com/questions/34066804/disabling-caching-in-flask#:~:text=43-,If,-you%20have%20always
 app.config['SECRET_KEY'] = 'ICESECRET'
 
 def fresh():
@@ -133,6 +134,7 @@ def index():
 
 @app.route('/2/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process2p(wordAfter,choice):
+    global colors
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -140,6 +142,8 @@ def process2p(wordAfter,choice):
 @app.route('/2', methods=['GET'])
 def process2g():
     global cur_wordlist
+    print(suggestions[0])
+    print(colors[0])
     cur_wordlist = get_words_from_guess(cur_wordlist, suggestions[0], colors[0])
     remaining = len(cur_wordlist)
     if remaining == 0:
@@ -149,6 +153,7 @@ def process2g():
 
 @app.route('/3/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process3p(wordAfter, choice):
+    global colors
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -166,7 +171,7 @@ def process3g():
 
 @app.route('/4/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process4p(wordAfter, choice):
-    print(wordAfter, "#4 from flask!") 
+    global colors 
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -184,7 +189,7 @@ def process4g():
 
 @app.route('/5/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process5p(wordAfter,choice):
-    print(wordAfter, "#5 from flask!") 
+    global colors
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
@@ -202,7 +207,8 @@ def process5g():
 
 @app.route('/6/<string:wordAfter>/<string:choice>', methods=['POST'])
 def process6p(wordAfter, choice):
-    print(wordAfter, "#6 from flask!") 
+    #print(wordAfter, "#6 from flask!") 
+    global colors
     colors.append(wordAfter)
     suggestions.append(choice)
     return ""
